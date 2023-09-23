@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -65,6 +66,18 @@ func (u *user) GetDocument() string {
 }
 
 func (u *user) Validate() error {
+	if u.name == "" {
+		return errors.New("invalid name")
+	}
+	if u.email == "" {
+		return errors.New("invalid email")
+	}
+	if u.document == "" {
+		return errors.New("invalid document")
+	}
+	if u.password == "" {
+		return errors.New("invalid password")
+	}
 	return nil
 }
 
