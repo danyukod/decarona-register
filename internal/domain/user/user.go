@@ -25,20 +25,27 @@ type user struct {
 }
 
 func NewUser(name, email, document, password string) (IUser, error) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, err
-	}
 	userDomain := user{
 		name:     name,
 		email:    email,
 		document: document,
-		password: string(hash),
+		password: encryptPassword(password),
 	}
 	if err := userDomain.Validate(); err != nil {
 		return nil, err
 	}
 	return &userDomain, nil
+}
+
+func encryptPassword(password string) string {
+	if password == "" {
+		return password
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return password
+	}
+	return string(hash)
 }
 
 func (u *user) GetPassword() string {

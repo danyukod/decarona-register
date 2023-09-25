@@ -5,20 +5,59 @@ import (
 	"testing"
 )
 
-func TestNewUser(t *testing.T) {
-	password := "testPassword"
-	u, err := NewUser("testName", "testEmail", "testDocument", password)
+func TestUser(t *testing.T) {
 
-	assert.Nil(t, err, "Failed to create new user: %v", err)
+	name := "John Doe"
+	email := "jd@email.com"
+	document := "12345678900"
+	password := "123456"
 
-	assert.NotNil(t, u, "Failed to create new user: User is null")
+	t.Run("should create new user successfuly", func(t *testing.T) {
 
-	assert.Equal(t, "testName", u.GetName(), "Failed setattr name: Expected testName, got %v", u.GetName())
+		user, err := NewUser(name, email, document, password)
 
-	assert.Equal(t, "testEmail", u.GetEmail(), "Failed setattr email: Expected testEmail, got %v", u.GetEmail())
+		assert.Nil(t, err)
+		assert.NotNil(t, user)
+		assert.Equal(t, name, user.GetName())
+		assert.Equal(t, email, user.GetEmail())
+		assert.Equal(t, document, user.GetDocument())
+		assert.NotEqual(t, password, user.GetPassword())
+		assert.True(t, user.ValidatePassword(password))
+	})
 
-	assert.Equal(t, "testDocument", u.GetDocument(), "Failed setattr document: Expected testDocument, got %v", u.GetDocument())
+	t.Run("should return error when name is empty", func(t *testing.T) {
 
-	assert.True(t, u.ValidatePassword(password), "Failed validate password")
+		user, err := NewUser("", email, document, password)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, user)
+		assert.Equal(t, "invalid name", err.Error())
+	})
+
+	t.Run("should return error when email is empty", func(t *testing.T) {
+
+		user, err := NewUser(name, "", document, password)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, user)
+		assert.Equal(t, "invalid email", err.Error())
+	})
+
+	t.Run("should return error when document is empty", func(t *testing.T) {
+
+		user, err := NewUser(name, email, "", password)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, user)
+		assert.Equal(t, "invalid document", err.Error())
+	})
+
+	t.Run("should return error when password is empty", func(t *testing.T) {
+		user, err := NewUser(name, email, document, "")
+
+		assert.NotNil(t, err)
+		assert.Nil(t, user)
+		assert.Equal(t, "invalid password", err.Error())
+	})
 
 }
