@@ -10,10 +10,11 @@ func TestCar(t *testing.T) {
 	brand := "Ford"
 	color := "Red"
 	description := "A cool car"
+	document := "ABC1234"
 	year := 2020
 
 	t.Run("should create new car successfuly", func(t *testing.T) {
-		car, err := NewCar(model, brand, color, &description, year)
+		car, err := NewCar(model, brand, color, document, &description, year)
 
 		assert.Nil(t, err)
 		assert.NotNil(t, car)
@@ -25,7 +26,7 @@ func TestCar(t *testing.T) {
 	})
 
 	t.Run("should return error when model is empty", func(t *testing.T) {
-		car, err := NewCar("", brand, color, &description, year)
+		car, err := NewCar("", brand, color, document, &description, year)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, car)
@@ -33,7 +34,7 @@ func TestCar(t *testing.T) {
 	})
 
 	t.Run("should return error when brand is empty", func(t *testing.T) {
-		car, err := NewCar(model, "", color, &description, year)
+		car, err := NewCar(model, "", color, document, &description, year)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, car)
@@ -41,7 +42,7 @@ func TestCar(t *testing.T) {
 	})
 
 	t.Run("should return error when color is empty", func(t *testing.T) {
-		car, err := NewCar(model, brand, "", &description, year)
+		car, err := NewCar(model, brand, "", document, &description, year)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, car)
@@ -49,10 +50,18 @@ func TestCar(t *testing.T) {
 	})
 
 	t.Run("should return error when year is empty", func(t *testing.T) {
-		car, err := NewCar(model, brand, color, &description, 0)
+		car, err := NewCar(model, brand, color, document, &description, 0)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, car)
 		assert.Equal(t, "invalid year", err.Error())
+	})
+
+	t.Run("should return error when document is empty", func(t *testing.T) {
+		car, err := NewCar(model, brand, color, "", &description, year)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, car)
+		assert.Equal(t, "invalid document", err.Error())
 	})
 }
