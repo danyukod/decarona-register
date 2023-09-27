@@ -17,9 +17,9 @@ func TestUser(t *testing.T) {
 	email := "jd@email.com"
 	password := "123456"
 
-	doc1, err := document.DocumentFromText(documentType1, documentNumber1)
+	doc1, err := document.FromText(documentType1, documentNumber1)
 	assert.Nil(t, err)
-	doc2, err := document.DocumentFromText(documentType2, documentNumber2)
+	doc2, err := document.FromText(documentType2, documentNumber2)
 	assert.Nil(t, err)
 
 	var documentList []document.IDocument

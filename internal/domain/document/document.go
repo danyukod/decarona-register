@@ -1,6 +1,9 @@
 package document
 
-import "errors"
+import (
+	"errors"
+	"strings"
+)
 
 const (
 	CPF = "CPF"
@@ -13,49 +16,13 @@ type IDocument interface {
 	Validate() error
 }
 
-func DocumentFromText(documentType string, documentNumber string) (IDocument, error) {
-	switch documentType {
+func FromText(documentType string, documentNumber string) (IDocument, error) {
+	switch strings.ToUpper(documentType) {
 	case CPF:
-		return CPFDocument{
-			number: documentNumber,
-		}, nil
+		return NewCPFDocument(documentNumber)
 	case CNH:
-		return CNHDocument{
-			number: documentNumber,
-		}, nil
+		return NewCNHDocument(documentNumber)
 	default:
 		return nil, errors.New("invalid document type")
 	}
-}
-
-type CPFDocument struct {
-	number string
-}
-
-func (c CPFDocument) GetType() string {
-	return CPF
-}
-
-func (c CPFDocument) GetNumber() string {
-	return c.number
-}
-
-func (c CPFDocument) Validate() error {
-	return nil
-}
-
-type CNHDocument struct {
-	number string
-}
-
-func (c CNHDocument) GetType() string {
-	return CNH
-}
-
-func (c CNHDocument) GetNumber() string {
-	return c.number
-}
-
-func (c CNHDocument) Validate() error {
-	return nil
 }
