@@ -1,6 +1,8 @@
 package car
 
-import "errors"
+import (
+	"errors"
+)
 
 type ICar interface {
 	GetModel() string

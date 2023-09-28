@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"github.com/danyukod/decarona-register/internal/domain/car"
 	"github.com/danyukod/decarona-register/internal/domain/document"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -14,6 +15,7 @@ type IUser interface {
 	GetDocuments() []document.IDocument
 	GetPassword() string
 	Validate() error
+	AddCar(car car.ICar)
 	ValidatePassword(password string) bool
 }
 
@@ -22,6 +24,7 @@ type user struct {
 	name      string
 	email     string
 	documents []document.IDocument
+	cars      []car.ICar
 	password  string
 }
 
@@ -89,4 +92,8 @@ func (u *user) Validate() error {
 func (u *user) ValidatePassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.password), []byte(password))
 	return err == nil
+}
+
+func (u *user) AddCar(car car.ICar) {
+	u.cars = append(u.cars, car)
 }

@@ -1,4 +1,4 @@
-package commands
+package dto
 
 type RegisterUserDTO struct {
 	Name      string
@@ -13,6 +13,7 @@ type DocumentDTO struct {
 }
 
 type RegisterCarDTO struct {
+	OwnerId     string
 	Model       string
 	Brand       string
 	Year        int
