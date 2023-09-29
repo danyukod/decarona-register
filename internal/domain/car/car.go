@@ -3,44 +3,37 @@ package car
 import "errors"
 
 type ICar interface {
-	GetID() string
-	SetID(id string)
 	GetModel() string
 	GetBrand() string
 	GetYear() int
 	GetColor() string
+	GetDocument() string
 	GetDescription() *string
+	Validate() error
 }
 
 type car struct {
-	id          string
 	model       string
 	brand       string
 	year        int
 	color       string
+	document    string
 	description *string
 }
 
-func NewCar(model, brand, color string, description *string, year int) (ICar, error) {
+func NewCar(model, brand, color, document string, description *string, year int) (ICar, error) {
 	carDomain := car{
 		model:       model,
 		brand:       brand,
 		year:        year,
 		color:       color,
+		document:    document,
 		description: description,
 	}
 	if err := carDomain.Validate(); err != nil {
 		return nil, err
 	}
 	return &carDomain, nil
-}
-
-func (c *car) GetID() string {
-	return c.id
-}
-
-func (c *car) SetID(id string) {
-	c.id = id
 }
 
 func (c *car) GetModel() string {
@@ -59,6 +52,10 @@ func (c *car) GetColor() string {
 	return c.color
 }
 
+func (c *car) GetDocument() string {
+	return c.document
+}
+
 func (c *car) GetDescription() *string {
 	return c.description
 }
@@ -75,6 +72,9 @@ func (c *car) Validate() error {
 	}
 	if c.color == "" {
 		return errors.New("invalid color")
+	}
+	if c.document == "" {
+		return errors.New("invalid document")
 	}
 	return nil
 }

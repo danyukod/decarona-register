@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"github.com/danyukod/decarona-register/internal/domain/document"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -10,26 +11,26 @@ type IUser interface {
 	SetID(id string)
 	GetName() string
 	GetEmail() string
-	GetDocument() string
+	GetDocuments() []document.IDocument
 	GetPassword() string
 	Validate() error
 	ValidatePassword(password string) bool
 }
 
 type user struct {
-	id       string
-	name     string
-	email    string
-	document string
-	password string
+	id        string
+	name      string
+	email     string
+	documents []document.IDocument
+	password  string
 }
 
-func NewUser(name, email, document, password string) (IUser, error) {
+func NewUser(name, email, password string, documents []document.IDocument) (IUser, error) {
 	userDomain := user{
-		name:     name,
-		email:    email,
-		document: document,
-		password: encryptPassword(password),
+		name:      name,
+		email:     email,
+		documents: documents,
+		password:  encryptPassword(password),
 	}
 	if err := userDomain.Validate(); err != nil {
 		return nil, err
@@ -68,8 +69,8 @@ func (u *user) GetEmail() string {
 	return u.email
 }
 
-func (u *user) GetDocument() string {
-	return u.document
+func (u *user) GetDocuments() []document.IDocument {
+	return u.documents
 }
 
 func (u *user) Validate() error {
@@ -78,9 +79,6 @@ func (u *user) Validate() error {
 	}
 	if u.email == "" {
 		return errors.New("invalid email")
-	}
-	if u.document == "" {
-		return errors.New("invalid document")
 	}
 	if u.password == "" {
 		return errors.New("invalid password")
