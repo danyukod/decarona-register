@@ -36,7 +36,7 @@ func (r *RegisterUserService) Execute(dto dto.RegisterUserDTO) (user.IUser, erro
 		documents = append(documents, docFromText)
 	}
 
-	userDomain, err := user.NewUser(dto.Name, dto.Email, dto.Password, documents)
+	userDomain, err := user.NewUser(dto.Name, dto.Email, dto.Gender, dto.Password, documents)
 	if err != nil {
 		return nil, err
 	}

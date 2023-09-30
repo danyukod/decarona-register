@@ -3,6 +3,7 @@ package dto
 type RegisterUserDTO struct {
 	Name      string
 	Email     string
+	Gender    string
 	Documents []DocumentDTO
 	Password  string
 }

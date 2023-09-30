@@ -39,8 +39,9 @@ func TestNewRegisterUserService(t *testing.T) {
 		assert.Equal(t, "1", userDomain.GetID())
 		assert.Equal(t, registerUserDto.Name, userDomain.GetName())
 		assert.Equal(t, registerUserDto.Email, userDomain.GetEmail())
-		assert.Equal(t, len(registerUserDto.Documents), len(userDomain.GetDocuments()))
+		assert.Equal(t, registerUserDto.Gender, userDomain.GetGender())
 		assert.True(t, returnedUserDomain.ValidatePassword(registerUserDto.Password))
+		assert.Equal(t, len(registerUserDto.Documents), len(userDomain.GetDocuments()))
 		assert.Equal(t, registerUserDto.Documents[0].Number, userDomain.GetDocuments()[0].GetNumber())
 		assert.Equal(t, registerUserDto.Documents[0].DocType, userDomain.GetDocuments()[0].GetType())
 		assert.Equal(t, registerUserDto.Documents[1].Number, userDomain.GetDocuments()[1].GetNumber())
@@ -51,8 +52,10 @@ func TestNewRegisterUserService(t *testing.T) {
 
 func mockNewUserDto() dto.RegisterUserDTO {
 	return dto.RegisterUserDTO{
-		Name:  "John Doe",
-		Email: "jd@email.com",
+		Name:     "John Doe",
+		Email:    "jd@email.com",
+		Gender:   "M",
+		Password: "12345678",
 		Documents: []dto.DocumentDTO{
 			{
 				Number:  "66329748055",
@@ -63,13 +66,12 @@ func mockNewUserDto() dto.RegisterUserDTO {
 				DocType: "CNH",
 			},
 		},
-		Password: "12345678",
 	}
 }
 
 func mockNewUserDomain(dto dto.RegisterUserDTO) user.IUser {
 	documents := mockNewDocuments(dto.Documents)
-	userDomain, _ := user.NewUser(dto.Name, dto.Email, dto.Password, documents)
+	userDomain, _ := user.NewUser(dto.Name, dto.Email, dto.Gender, dto.Password, documents)
 	return userDomain
 }
 
