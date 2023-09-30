@@ -8,14 +8,15 @@ import (
 
 func TestUser(t *testing.T) {
 
-	documentNumber1 := "12345678900"
-	documentNumber2 := "12345678901"
+	documentNumber1 := "66329748055"
+	documentNumber2 := "90496138465"
 	documentType1 := "CPF"
 	documentType2 := "CNH"
 
 	name := "John Doe"
 	email := "jd@email.com"
 	password := "123456"
+	gender := "M"
 
 	doc1, err := document.FromText(documentType1, documentNumber1)
 	assert.Nil(t, err)
@@ -29,7 +30,7 @@ func TestUser(t *testing.T) {
 
 	t.Run("should create new user successfuly", func(t *testing.T) {
 
-		user, err := NewUser(name, email, password, documentList)
+		user, err := NewUser(name, email, gender, password, documentList)
 
 		assert.Nil(t, err)
 		assert.NotNil(t, user)
@@ -42,7 +43,7 @@ func TestUser(t *testing.T) {
 
 	t.Run("should return error when name is empty", func(t *testing.T) {
 
-		user, err := NewUser("", email, password, documentList)
+		user, err := NewUser("", email, gender, password, documentList)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
@@ -51,16 +52,25 @@ func TestUser(t *testing.T) {
 
 	t.Run("should return error when email is empty", func(t *testing.T) {
 
-		user, err := NewUser(name, "", password, documentList)
+		user, err := NewUser(name, "", gender, password, documentList)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
 		assert.Equal(t, "invalid email", err.Error())
 	})
 
+	t.Run("should return error when gender is empty", func(t *testing.T) {
+
+		user, err := NewUser(name, email, "", password, documentList)
+
+		assert.NotNil(t, err)
+		assert.Nil(t, user)
+		assert.Equal(t, "undefined gender", err.Error())
+	})
+
 	t.Run("should return error when password is empty", func(t *testing.T) {
 
-		user, err := NewUser(name, email, "", documentList)
+		user, err := NewUser(name, email, gender, "", documentList)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
