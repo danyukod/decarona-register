@@ -57,11 +57,11 @@ func TestCar(t *testing.T) {
 		assert.Equal(t, "invalid year", err.Error())
 	})
 
-	t.Run("should return error when document is empty", func(t *testing.T) {
+	t.Run("should return error when plate is empty", func(t *testing.T) {
 		car, err := NewCar(model, brand, color, "", &description, year)
 
 		assert.NotNil(t, err)
 		assert.Nil(t, car)
-		assert.Equal(t, "invalid document", err.Error())
+		assert.Equal(t, "invalid plate", err.Error())
 	})
 }

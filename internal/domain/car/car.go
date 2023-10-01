@@ -9,7 +9,7 @@ type ICar interface {
 	GetBrand() string
 	GetYear() int
 	GetColor() string
-	GetDocument() string
+	GetPlate() string
 	GetDescription() *string
 	Validate() error
 }
@@ -19,17 +19,17 @@ type car struct {
 	brand       string
 	year        int
 	color       string
-	document    string
+	plate       string
 	description *string
 }
 
-func NewCar(model, brand, color, document string, description *string, year int) (ICar, error) {
+func NewCar(model, brand, color, plate string, description *string, year int) (ICar, error) {
 	carDomain := car{
 		model:       model,
 		brand:       brand,
 		year:        year,
 		color:       color,
-		document:    document,
+		plate:       plate,
 		description: description,
 	}
 	if err := carDomain.Validate(); err != nil {
@@ -54,8 +54,8 @@ func (c *car) GetColor() string {
 	return c.color
 }
 
-func (c *car) GetDocument() string {
-	return c.document
+func (c *car) GetPlate() string {
+	return c.plate
 }
 
 func (c *car) GetDescription() *string {
@@ -75,8 +75,8 @@ func (c *car) Validate() error {
 	if c.color == "" {
 		return errors.New("invalid color")
 	}
-	if c.document == "" {
-		return errors.New("invalid document")
+	if c.plate == "" {
+		return errors.New("invalid plate")
 	}
 	return nil
 }
