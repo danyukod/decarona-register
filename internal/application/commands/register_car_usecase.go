@@ -27,7 +27,7 @@ func (r *RegisterCarService) Execute(dto dto.RegisterCarDTO) (user.IUser, error)
 		return nil, err
 	}
 
-	carDomain, err := car.NewCar(dto.Model, dto.Brand, dto.Color, dto.Document, dto.Description, dto.Year)
+	carDomain, err := car.NewCar(dto.Model, dto.Brand, dto.Color, dto.Plate, dto.Description, dto.Year)
 	if err != nil {
 		return nil, err
 	}

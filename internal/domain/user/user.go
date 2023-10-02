@@ -20,6 +20,7 @@ type IUser interface {
 	GetPassword() string
 	GetGender() string
 	GetDocuments() []document.IDocument
+	GetCars() []car.ICar
 	AddCar(car car.ICar)
 	Validate() error
 	ValidatePassword(password string) bool
@@ -33,6 +34,10 @@ type user struct {
 	documents []document.IDocument
 	cars      []car.ICar
 	password  string
+}
+
+func (u *user) GetCars() []car.ICar {
+	return u.cars
 }
 
 func NewUser(name, email, gender, password string, documents []document.IDocument) (IUser, error) {

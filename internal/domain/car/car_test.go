@@ -9,11 +9,11 @@ func TestCar(t *testing.T) {
 	model := "Fiesta"
 	brand := "Ford"
 	color := "Red"
-	description := "A cool car"
+	description := "A cool mock_car"
 	document := "ABC1234"
 	year := 2020
 
-	t.Run("should create new car successfuly", func(t *testing.T) {
+	t.Run("should create new mock_car successfuly", func(t *testing.T) {
 		car, err := NewCar(model, brand, color, document, &description, year)
 
 		assert.Nil(t, err)

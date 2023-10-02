@@ -28,7 +28,7 @@ func TestUser(t *testing.T) {
 	documentList = append(documentList, doc1)
 	documentList = append(documentList, doc2)
 
-	t.Run("should create new user successfuly", func(t *testing.T) {
+	t.Run("should create new mock_user successfuly", func(t *testing.T) {
 
 		user, err := NewUser(name, email, gender, password, documentList)
 

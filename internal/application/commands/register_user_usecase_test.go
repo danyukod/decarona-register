@@ -1,33 +1,25 @@
 package commands
 
 import (
-	"github.com/danyukod/decarona-register/internal/application/commands/dto"
-	"github.com/danyukod/decarona-register/internal/domain/document"
-	"github.com/danyukod/decarona-register/internal/domain/user"
+	"github.com/danyukod/decarona-register/internal/test/application/mock_commands/mock_dto"
+	"github.com/danyukod/decarona-register/internal/test/application/mock_repository"
+	mock_user "github.com/danyukod/decarona-register/internal/test/domain/mock_user"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
 )
 
-type UserRepositoryMock struct {
-	mock.Mock
-}
-
-func (r *UserRepositoryMock) Register(iUser user.IUser) (user.IUser, error) {
-	args := r.Called(iUser)
-	return args.Get(0).(user.IUser), args.Error(1)
-}
-
 func TestNewRegisterUserService(t *testing.T) {
-	repository := UserRepositoryMock{}
+	repository := mock_repository.UserRepositoryMock{}
 	service := NewRegisterUserService(&repository)
 	assert.NotNil(t, service)
 
-	t.Run("should return a user with success", func(t *testing.T) {
+	t.Run("should return a mock_user with success", func(t *testing.T) {
 
-		registerUserDto := mockNewUserDto()
+		registerUserDto := mock_dto.MockNewUserDto()
 
-		returnedUserDomain := mockNewUserDomain(registerUserDto)
+		returnedUserDomain := mock_user.MockNewUserDomain(registerUserDto)
 		returnedUserDomain.SetID("1")
 
 		repository.On("Register", mock.Anything).Return(returnedUserDomain, nil).Once()
@@ -48,38 +40,4 @@ func TestNewRegisterUserService(t *testing.T) {
 		assert.Equal(t, registerUserDto.Documents[1].DocType, userDomain.GetDocuments()[1].GetType())
 	})
 
-}
-
-func mockNewUserDto() dto.RegisterUserDTO {
-	return dto.RegisterUserDTO{
-		Name:     "John Doe",
-		Email:    "jd@email.com",
-		Gender:   "M",
-		Password: "12345678",
-		Documents: []dto.DocumentDTO{
-			{
-				Number:  "66329748055",
-				DocType: "CPF",
-			},
-			{
-				Number:  "90496138465",
-				DocType: "CNH",
-			},
-		},
-	}
-}
-
-func mockNewUserDomain(dto dto.RegisterUserDTO) user.IUser {
-	documents := mockNewDocuments(dto.Documents)
-	userDomain, _ := user.NewUser(dto.Name, dto.Email, dto.Gender, dto.Password, documents)
-	return userDomain
-}
-
-func mockNewDocuments(documents []dto.DocumentDTO) []document.IDocument {
-	var documentsDomain []document.IDocument
-	for _, doc := range documents {
-		documentDomain, _ := document.FromText(doc.DocType, doc.Number)
-		documentsDomain = append(documentsDomain, documentDomain)
-	}
-	return documentsDomain
 }

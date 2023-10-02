@@ -19,6 +19,6 @@ type RegisterCarDTO struct {
 	Brand       string
 	Year        int
 	Color       string
-	Document    string
+	Plate       string
 	Description *string
 }
