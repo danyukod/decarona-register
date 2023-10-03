@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/danyukod/decarona-register/internal/domain/car"
 	"github.com/danyukod/decarona-register/internal/domain/document"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -75,6 +76,43 @@ func TestUser(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Nil(t, user)
 		assert.Equal(t, "invalid password", err.Error())
+	})
+
+	t.Run("should add new car to user", func(t *testing.T) {
+
+		user, err := NewUser(name, email, gender, password, documentList)
+		assert.Nil(t, err)
+		assert.NotNil(t, user)
+
+		newCar, err := car.NewCar("model", "brand", "color", "plate", nil, 2020)
+		assert.Nil(t, err)
+		assert.NotNil(t, newCar)
+
+		user.AddCar(newCar)
+
+		assert.Equal(t, 1, len(user.GetCars()))
+	})
+
+	t.Run("should add new document to user", func(t *testing.T) {
+
+		doc, err := document.FromText("CPF", "66329748055")
+		assert.Nil(t, err)
+		assert.NotNil(t, doc)
+		var documents []document.IDocument
+		documents = append(documents, doc)
+		user, err := NewUser(name, email, gender, password, documents)
+
+		assert.Nil(t, err)
+		assert.NotNil(t, user)
+
+		doc, err = document.FromText("CNH", "90496138465")
+		assert.Nil(t, err)
+		assert.NotNil(t, doc)
+
+		user.AddDocument(doc)
+
+		assert.Equal(t, 2, len(user.GetDocuments()))
+
 	})
 
 }

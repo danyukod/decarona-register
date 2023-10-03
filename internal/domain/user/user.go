@@ -24,7 +24,7 @@ type IUser interface {
 	AddCar(car car.ICar)
 	Validate() error
 	ValidatePassword(password string) bool
-	ChangeProfileToPilot(cnh document.IDocument)
+	AddDocument(cnh document.IDocument)
 }
 
 type user struct {
@@ -130,6 +130,6 @@ func (u *user) AddCar(car car.ICar) {
 	u.cars = append(u.cars, car)
 }
 
-func (u *user) ChangeProfileToPilot(cnh document.IDocument) {
+func (u *user) AddDocument(cnh document.IDocument) {
 	u.documents = append(u.documents, cnh)
 }

@@ -31,7 +31,7 @@ func (r *ChangeProfileToPilotService) Execute(dto dto.ChangeProfileToPilotDTO) e
 		return err
 	}
 
-	userDomain.ChangeProfileToPilot(cnh)
+	userDomain.AddDocument(cnh)
 
 	_, err = r.Update(userDomain)
 	if err != nil {
