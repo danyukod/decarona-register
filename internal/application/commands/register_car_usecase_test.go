@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/danyukod/decarona-register/internal/domain/user"
 	"github.com/danyukod/decarona-register/internal/test/application/mock_commands/mock_dto"
+	"github.com/danyukod/decarona-register/internal/test/application/mock_repository"
 	"github.com/danyukod/decarona-register/internal/test/domain/mock_car"
 	"github.com/danyukod/decarona-register/internal/test/domain/mock_user"
 	"github.com/stretchr/testify/assert"
@@ -10,22 +10,8 @@ import (
 	"testing"
 )
 
-type CarRepositoryMock struct {
-	mock.Mock
-}
-
-func (r *CarRepositoryMock) FindOwnerCar(ownerId string) (user.IUser, error) {
-	args := r.Called(ownerId)
-	return args.Get(0).(user.IUser), args.Error(1)
-}
-
-func (r *CarRepositoryMock) Register(iUser user.IUser) (user.IUser, error) {
-	args := r.Called(iUser)
-	return args.Get(0).(user.IUser), args.Error(1)
-}
-
 func TestNewRegisterCarService(t *testing.T) {
-	repository := CarRepositoryMock{}
+	repository := mock_repository.CarRepositoryMock{}
 	service := NewRegisterCarService(&repository)
 	assert.NotNil(t, service)
 

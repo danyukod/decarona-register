@@ -45,3 +45,18 @@ func MockNewDocuments(documents []dto.DocumentDTO) []document.IDocument {
 	}
 	return documentsDomain
 }
+
+func MockNewUserWithoutCnhDto() dto.RegisterUserDTO {
+	return dto.RegisterUserDTO{
+		Name:     "John Doe",
+		Email:    "jd@email.com",
+		Gender:   "M",
+		Password: "12345678",
+		Documents: []dto.DocumentDTO{
+			{
+				Number:  "66329748055",
+				DocType: "CPF",
+			},
+		},
+	}
+}

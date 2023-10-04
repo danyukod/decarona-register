@@ -3,7 +3,7 @@ package commands
 import (
 	"github.com/danyukod/decarona-register/internal/test/application/mock_commands/mock_dto"
 	"github.com/danyukod/decarona-register/internal/test/application/mock_repository"
-	mock_user "github.com/danyukod/decarona-register/internal/test/domain/mock_user"
+	"github.com/danyukod/decarona-register/internal/test/domain/mock_user"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

@@ -21,7 +21,7 @@ func NewChangeProfileToPilotService(repository repository.UserRepositoryInterfac
 }
 
 func (r *ChangeProfileToPilotService) Execute(dto dto.ChangeProfileToPilotDTO) error {
-	userDomain, err := r.Find(dto.UserId)
+	userDomain, err := r.FindById(dto.UserId)
 	if err != nil {
 		return err
 	}

@@ -3,7 +3,7 @@ package repository
 import "github.com/danyukod/decarona-register/internal/domain/user"
 
 type UserRepositoryInterface interface {
-	Find(id string) (user.IUser, error)
+	FindById(id string) (user.IUser, error)
 	Update(user user.IUser) (user.IUser, error)
 	Register(user user.IUser) (user.IUser, error)
 }
