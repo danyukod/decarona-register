@@ -13,7 +13,7 @@ type UserDocument struct {
 	Name     string        `bson:"name"`
 	Email    string        `bson:"email"`
 	Password string        `bson:"password"`
-	Car      []CarDocument `bson:"car"`
+	Car      []CarDocument `bson:"mock_car"`
 }
 
 func (u *UserDocument) GetID() string {
