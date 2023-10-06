@@ -1,6 +1,9 @@
 package repository
 
-import "github.com/danyukod/decarona-register/internal/domain/user"
+import (
+	"github.com/danyukod/decarona-register/internal/domain/user"
+	"github.com/danyukod/decarona-register/internal/infrastructure/mongodb/persistence"
+)
 
 type UserRepositoryInterface interface {
 	FindById(id string) (user.IUser, error)
@@ -9,10 +12,13 @@ type UserRepositoryInterface interface {
 }
 
 type UserRepository struct {
+	persistence.UserPersistenceInterface
 }
 
-func NewUserRepository() *UserRepository {
-	return &UserRepository{}
+func NewUserRepository(persistence persistence.UserPersistenceInterface) *UserRepository {
+	return &UserRepository{
+		persistence,
+	}
 }
 
 func (r *UserRepository) Register(user user.IUser) (user.IUser, error) {

@@ -6,40 +6,27 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type MongoDBConfigInterface interface {
+	GetClient(ctx context.Context) (*mongo.Client, error)
+}
+
 type MongoDBConfig struct {
-	Host string
-	Port string
-	User string
-	Pass string
+	uri string
 }
 
-func NewMongoDBConfig() *MongoDBConfig {
-	return &MongoDBConfig{}
+func NewMongoDBConfig(uri string) MongoDBConfigInterface {
+	return &MongoDBConfig{
+		uri: uri,
+	}
 }
 
-func (c *MongoDBConfig) GetHost() string {
-	return c.Host
+func (c *MongoDBConfig) getConnectionString() string {
+	return c.uri
 }
 
-func (c *MongoDBConfig) GetPort() string {
-	return c.Port
-}
-
-func (c *MongoDBConfig) GetUser() string {
-	return c.User
-}
-
-func (c *MongoDBConfig) GetPass() string {
-	return c.Pass
-}
-
-func (c *MongoDBConfig) GetConnectionString() string {
-	return "mongodb://" + c.GetUser() + ":" + c.GetPass() + "@" + c.GetHost()
-}
-
-func (c *MongoDBConfig) GetConnection(ctx context.Context) (*mongo.Client, error) {
+func (c *MongoDBConfig) GetClient(ctx context.Context) (*mongo.Client, error) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(c.GetConnectionString()).SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI(c.getConnectionString()).SetServerAPIOptions(serverAPI)
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		return nil, err
