@@ -20,16 +20,22 @@ type UserPersistenceInterface interface {
 }
 
 type UserPersistence struct {
-	*mongo.Database
+	client   *mongo.Client
+	database *mongo.Database
+	users    *mongo.Collection
 }
 
-func NewUserPersistence() *UserPersistence {
-	return &UserPersistence{}
+func NewUserPersistence(client *mongo.Client, database *mongo.Database) *UserPersistence {
+	return &UserPersistence{
+		client:   client,
+		database: database,
+		users:    database.Collection(CollectionName),
+	}
 }
 
 func (r *UserPersistence) Save(ctx context.Context, user user.IUser) (*string, error) {
 	userDocument := document.FromUser(user)
-	id, err := r.Database.Collection(CollectionName).InsertOne(ctx, userDocument)
+	id, err := r.users.InsertOne(ctx, userDocument)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +45,7 @@ func (r *UserPersistence) Save(ctx context.Context, user user.IUser) (*string, e
 
 func (r *UserPersistence) FindByEmail(ctx context.Context, email string) (user.IUser, error) {
 	var userDocument document.UserDocument
-	err := r.Database.Collection(CollectionName).FindOne(ctx, document.UserDocument{Email: email}).Decode(&userDocument)
+	err := r.users.FindOne(ctx, document.UserDocument{Email: email}).Decode(&userDocument)
 	if err != nil {
 		return nil, err
 	}
