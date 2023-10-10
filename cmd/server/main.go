@@ -24,4 +24,9 @@ func main() {
 		return
 	}
 
+	err = client.Disconnect(ctx)
+	if err != nil {
+		return
+	}
+
 }
