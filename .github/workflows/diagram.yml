@@ -9,13 +9,14 @@ on:
       branches:
         - main
         - develop
+        - feature/*
 
 jobs:
   get_data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
       - name: Update diagram
         uses: githubocto/repo-visualizer@main
         with:
