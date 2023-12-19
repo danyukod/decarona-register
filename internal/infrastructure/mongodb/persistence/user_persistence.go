@@ -25,11 +25,11 @@ type UserPersistence struct {
 	users    *mongo.Collection
 }
 
-func NewUserPersistence(database *mongo.Database) *UserPersistence {
+func NewUserPersistence(client *mongo.Client) *UserPersistence {
 	return &UserPersistence{
-		client:   database.Client(),
-		database: database,
-		users:    database.Collection(CollectionName),
+		client:   client,
+		database: client.Database("decarona"),
+		users:    client.Database("decarona").Collection(CollectionName),
 	}
 }
 
