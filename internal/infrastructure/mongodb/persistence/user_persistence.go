@@ -6,7 +6,6 @@ import (
 	document_domain "github.com/danyukod/decarona-register/internal/domain/document"
 	"github.com/danyukod/decarona-register/internal/domain/user"
 	"github.com/danyukod/decarona-register/internal/infrastructure/mongodb/persistence/document"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -51,10 +50,6 @@ func (r *UserPersistence) FindByEmail(ctx context.Context, email string) (user.I
 	}
 
 	return toDomainUser(userDocument)
-}
-
-func getHexObjectIdString(id interface{}) string {
-	return id.(primitive.ObjectID).Hex()
 }
 
 func toDomainUser(userDocument document.UserDocument) (user.IUser, error) {

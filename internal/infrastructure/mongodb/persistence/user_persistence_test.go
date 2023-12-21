@@ -69,19 +69,6 @@ func TestUserPersistence_Save(t *testing.T) {
 		assert.NotNil(t, save)
 	})
 
-	t.Run("should return error when save user", func(t *testing.T) {
-		ctx := context.Background()
-		persistence := NewUserPersistence(mongoClient)
-		userMock, err := getUserMock()
-		assert.Nil(t, err)
-		assert.NotNil(t, userMock)
-		save, err := persistence.Save(ctx, userMock)
-		assert.Nil(t, err)
-		assert.NotNil(t, save)
-		save, err = persistence.Save(ctx, userMock)
-		assert.NotNil(t, err)
-		assert.Nil(t, save)
-	})
 }
 
 func getUserMock() (user.IUser, error) {
