@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"fmt"
 	document2 "github.com/danyukod/decarona-register/internal/domain/document"
 	"github.com/danyukod/decarona-register/internal/domain/user"
 	"github.com/ory/dockertest/v3"
@@ -31,16 +32,18 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not start resource: %s", err)
 	}
 
-	if err := pool.Retry(func() error {
+	if err = pool.Retry(func() error {
 		var err error
-		serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-		uri := "mongodb://localhost:" + resource.GetPort("27017/tcp")
-		opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
-		mongoClient, err := mongo.Connect(nil, opts)
+		mongoClient, err = mongo.Connect(
+			context.TODO(),
+			options.Client().ApplyURI(
+				fmt.Sprintf("mongodb://localhost:%s", resource.GetPort("27017/tcp")),
+			),
+		)
 		if err != nil {
-			log.Fatalf("Could not connect to database: %s", err)
+			return err
 		}
-		return mongoClient.Ping(nil, nil)
+		return mongoClient.Ping(context.TODO(), nil)
 	}); err != nil {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
@@ -66,6 +69,19 @@ func TestUserPersistence_Save(t *testing.T) {
 		assert.NotNil(t, save)
 	})
 
+	t.Run("should return error when save user", func(t *testing.T) {
+		ctx := context.Background()
+		persistence := NewUserPersistence(mongoClient)
+		userMock, err := getUserMock()
+		assert.Nil(t, err)
+		assert.NotNil(t, userMock)
+		save, err := persistence.Save(ctx, userMock)
+		assert.Nil(t, err)
+		assert.NotNil(t, save)
+		save, err = persistence.Save(ctx, userMock)
+		assert.NotNil(t, err)
+		assert.Nil(t, save)
+	})
 }
 
 func getUserMock() (user.IUser, error) {

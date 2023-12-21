@@ -39,7 +39,7 @@ func (r *UserPersistence) Save(ctx context.Context, user user.IUser) (*string, e
 	if err != nil {
 		return nil, err
 	}
-	idString := getHexObjectIdString(id.InsertedID)
+	idString := id.InsertedID.(string)
 	return &idString, nil
 }
 

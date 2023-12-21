@@ -3,6 +3,7 @@ package document
 import (
 	"github.com/danyukod/decarona-register/internal/domain/car"
 	"github.com/danyukod/decarona-register/internal/domain/user"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type IUserDocument interface {
@@ -58,11 +59,16 @@ func (u *UserDocument) GetCars() []ICarDocument {
 
 func FromUser(user user.IUser) UserDocument {
 	return UserDocument{
+		ID:       getHexObjectIdString(),
 		Name:     user.GetName(),
 		Email:    user.GetEmail(),
 		Password: user.GetPassword(),
 		Cars:     carDocumentListFromCars(user.GetCars()),
 	}
+}
+
+func getHexObjectIdString() string {
+	return primitive.NewObjectID().Hex()
 }
 
 func carDocumentListFromCars(cars []car.ICar) []CarDocument {
